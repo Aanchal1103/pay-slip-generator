@@ -1,0 +1,30 @@
+{
+  "name": "pay-slip-generator",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "flexboxgrid": "^6.3.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "NODE_PATH=src react-scripts start",
+    "build": "react-scripts build",
+    "test": "NODE_PATH=src react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"],
+    "*.{js,json,css}": ["prettier --write", "git add"]
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-plugin-react": "^7.8.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.1.0",
+    "prettier": "1.12.1"
+  }
+}
