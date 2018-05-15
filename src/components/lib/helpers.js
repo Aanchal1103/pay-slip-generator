@@ -1,4 +1,8 @@
-export const getIncomeTax = salary => {
+import moment from "moment";
+
+const formatAmount = (amount, days = 31) => Math.round(amount / 31 * days);
+
+export const getIncomeTax = (salary, days) => {
   let tax = 0,
     taxableAmount = 0;
 
@@ -16,12 +20,24 @@ export const getIncomeTax = salary => {
     tax = 0.19 * taxableAmount;
   }
 
-  return Math.round(tax / 12);
+  return formatAmount(tax / 12, days);
 };
 
-export const getGrossIncome = annualSalary => Math.round(annualSalary / 12);
+export const getGrossIncome = (annualSalary, days) =>
+  formatAmount(annualSalary / 12, days);
 
-export const getNetIncome = (grossIncome, tax) => Math.round(grossIncome - tax);
+export const getNetIncome = (grossIncome, tax, days) =>
+  formatAmount(grossIncome - tax, days);
 
-export const getSuperAmount = (grossIncome, superRate) =>
-  Math.round(grossIncome * superRate / 100);
+export const getSuperAmount = (grossIncome, superRate, days) =>
+  formatAmount(grossIncome * superRate / 100, days);
+
+export const getDaysServed = startDate => {
+  const date = moment(startDate),
+    days = date.daysInMonth() - date.date();
+
+  return {
+    days,
+    lastDate: date.endOf("month").format("dd-mm-yyyy")
+  };
+};
