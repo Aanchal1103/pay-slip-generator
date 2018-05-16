@@ -21,14 +21,14 @@ class Main extends PureComponent {
     const { details, updateDetails } = this.props;
 
     return (
-      <React.Fragment>
+      <div className="container">
         <SalaryDetailsForm
           details={details}
           updateDetails={updateDetails}
           showPaySlip={this.showPaySlip}
         />
         {paySlipVisible && <PaySlip {...details} />}
-      </React.Fragment>
+      </div>
     );
   }
 }

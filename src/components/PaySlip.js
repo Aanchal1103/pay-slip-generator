@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Row, Col } from "react-flexbox-grid";
 
 import {
   getIncomeTax,
   getGrossIncome,
   getNetIncome,
   getSuperAmount,
-  getDaysServed
+  getParsedDates
 } from "components/lib/helpers";
 
 PaySlip.propTypes = {
@@ -25,26 +24,38 @@ export function PaySlip({
   superRate,
   paymentStartDate
 }) {
-  const { days, lastDate } = getDaysServed(paymentStartDate),
-    grossIncome = getGrossIncome(annualSalary, days),
-    incomeTax = getIncomeTax(annualSalary, days),
-    netIncome = getNetIncome(grossIncome, incomeTax, days),
-    superAmount = getSuperAmount(grossIncome, superRate, days);
+  const { days, totalDays, startDate, lastDate } = getParsedDates(
+      paymentStartDate
+    ),
+    grossIncome = getGrossIncome(annualSalary, days, totalDays),
+    incomeTax = getIncomeTax(annualSalary, days, totalDays),
+    netIncome = getNetIncome(grossIncome, incomeTax, days, totalDays),
+    superAmount = getSuperAmount(grossIncome, superRate, days, totalDays);
 
   return (
-    <Row>
-      <Col>Name: </Col>
-      <Col>{firstName + " " + lastName}</Col>
-      <Col>Pay Period: </Col>
-      <Col>{paymentStartDate + "-" + lastDate}</Col>
-      <Col>Gross Income: </Col>
-      <Col>{grossIncome}</Col>
-      <Col>Income Tax: </Col>
-      <Col>{incomeTax}</Col>
-      <Col>Net Income: </Col>
-      <Col>{netIncome}</Col>
-      <Col>Super Amount: </Col>
-      <Col>{superAmount}</Col>
-    </Row>
+    <div className="table-responsive table-container">
+      <table className="table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Pay Period</th>
+            <th>Gross Income</th>
+            <th>Income Tax</th>
+            <th>Net Income</th>
+            <th>Super Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{firstName + " " + lastName}</td>
+            <td>{startDate + " to " + lastDate}</td>
+            <td>{grossIncome}</td>
+            <td>{incomeTax}</td>
+            <td>{netIncome}</td>
+            <td>{superAmount}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 }

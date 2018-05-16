@@ -1,9 +1,11 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Row, Col } from "react-flexbox-grid";
+
+const TYPE_NUMBER = "number";
+const TYPE_STRING = "string";
 
 export class SalaryDetailsForm extends PureComponent {
-  state = {
+  static state = {
     firstName: "",
     lastName: "",
     annualSalary: 0,
@@ -16,11 +18,12 @@ export class SalaryDetailsForm extends PureComponent {
     showPaySlip: PropTypes.func.isRequired
   };
 
-  onFieldUpdate = e => {
-    const target = e.currentTarget;
+  onFieldUpdate = (e, type = TYPE_STRING) => {
+    const target = e.currentTarget,
+      value = TYPE_NUMBER === type ? parseInt(target.value, 10) : target.value;
 
     this.setState({
-      [target.name]: target.value
+      [target.name]: value
     });
   };
 
@@ -33,60 +36,63 @@ export class SalaryDetailsForm extends PureComponent {
   render() {
     return (
       <form onSubmit={this.onFormSubmit}>
-        <Row>
-          <Col>
-            <input
-              name="firstName"
-              className="input-field"
-              type="text"
-              onBlur={this.onFieldUpdate}
-              required
-            />
-          </Col>
-          <Col>
-            <input
-              name="lastName"
-              className="input-field"
-              type="text"
-              onBlur={this.onFieldUpdate}
-              required
-            />
-          </Col>
-          <Col>
-            <input
-              name="annualSalary"
-              className="input-field"
-              type="number"
-              onBlur={this.onFieldUpdate}
-              required
-            />
-          </Col>
-          <Col>
-            <input
-              name="superRate"
-              className="input-field"
-              type="number"
-              onBlur={this.onFieldUpdate}
-              required
-            />
-          </Col>
-          <Col>
-            <input
-              name="paymentStartDate"
-              className="input-field"
-              type="datetime-local"
-              onBlur={this.onFieldUpdate}
-              required
-            />
-          </Col>
-          <Col>
-            <input
-              name="submitButton"
-              className="submit-button"
-              type="submit"
-            />
-          </Col>
-        </Row>
+        <div className="form-group">
+          <label>First Name:</label>
+          <input
+            name="firstName"
+            className="form-control"
+            type="text"
+            onBlur={this.onFieldUpdate}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Last Name:</label>
+          <input
+            name="lastName"
+            className="form-control"
+            type="text"
+            onBlur={this.onFieldUpdate}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Annual Salary:</label>
+          <input
+            name="annualSalary"
+            className="form-control"
+            type="number"
+            onBlur={e => this.onFieldUpdate(e, "number")}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Super Rate:</label>
+          <input
+            name="superRate"
+            className="form-control"
+            type="number"
+            onBlur={e => this.onFieldUpdate(e, "number")}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Payment Start Date: </label>
+          <input
+            name="paymentStartDate"
+            className="form-control"
+            type="date"
+            onBlur={this.onFieldUpdate}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            name="submitButton"
+            className="btn btn-primary"
+            type="submit"
+          />
+        </div>
       </form>
     );
   }
